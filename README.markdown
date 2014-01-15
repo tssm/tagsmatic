@@ -14,8 +14,6 @@ recursively, a fileextension.tags.
 <dl>
 <dt>g:tagsloader_ctags:</dt>
 <dd>String declaring the ctags binary. Default: 'ctags'.</dd>
-<dt>g:tagsloader_ctags_exclude:</dt>
-<dd>String with patterns to be excluded by ctags. Default: '.git'.</dd>
 <dt>g:tagsloader_ignore_extensions:</dt>
 <dd>List of file extensios you don't want to generate tags.
 Default: ['css', 'html', 'markdown', 'sql', 'vim'].</dd>

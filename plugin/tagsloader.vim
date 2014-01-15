@@ -8,10 +8,6 @@ if !exists('g:tagsloader_ctags')
 	let g:tagsloader_ctags = 'ctags'
 endif
 
-if !exists('g:tagsloader_ctags_exclude')
-	let g:tagsloader_ctags_exclude = '.git'
-endif
-
 if !exists('g:tagsloader_ignore_extensions')
 	let g:tagsloader_ignore_extensions = ['css', 'html', 'markdown', 'sql', 'vim']
 endif
@@ -22,7 +18,7 @@ function s:GenerateTags()
 	if l:index >= 0
 		return 0
 	endif
-	execute 'call vimproc#system_bg("' . g:tagsloader_ctags . ' -f ' . l:file_extension . '.tags --exclude=' . g:tagsloader_ctags_exclude . ' --languages=' . &filetype . ' -R .")'
+	execute 'call vimproc#system_bg("' . g:tagsloader_ctags . ' -f ' . l:file_extension . '.tags --languages=' . &filetype . ' .")'
 endfunction
 
 function s:SetTags()
