@@ -8,23 +8,18 @@ if !exists('g:tagsloader_ctags')
 	let g:tagsloader_ctags = 'ctags'
 endif
 
-if !exists('g:tagsloader_ignore_extensions')
-	let g:tagsloader_ignore_extensions = ['css', 'html', 'markdown', 'sql', 'vim']
-endif
-
 function s:GenerateTags()
 	let l:file_extension = expand("%:e")
-	let l:index = index(g:tagsloader_ignore_extensions, tolower(l:file_extension))
-	if l:index >= 0
+	if index(g:tagsloader_use_ctags_for, tolower(l:file_extension)) == -1
 		return 0
 	endif
 	execute 'call vimproc#system_bg("' . g:tagsloader_ctags . ' -f ' . l:file_extension . '.tags --languages=' . &filetype . ' .")'
 endfunction
 
 function s:SetTags()
-	let l:file = expand("%:e") . ".tags"
-	if filereadable(l:file)
-		execute "setlocal tags=" . l:file
+	let l:tags_file = expand("%:e") . ".tags"
+	if filereadable(l:tags_file)
+		execute "setlocal tags=" . l:tags_file
 	endif
 endfunction
 
