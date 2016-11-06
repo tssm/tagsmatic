@@ -1,25 +1,33 @@
 if exists('g:tagsmatic_loaded')
 	finish
 endif
-
 let g:tagsmatic_loaded = 1
 
-if !exists('g:tagsmatic_ctags')
-	let g:tagsmatic_ctags = 'ctags'
-endif
+let s:supported_languages = split(system('ctags --list-languages'))
+let s:tags_dir = '.tags'
 
 function s:GenerateTags()
-	let l:file_extension = expand("%:e")
-	if index(g:tagsmatic_use_ctags_for, tolower(l:file_extension)) == -1
-		return 0
+	let l:language_is_supported = index(s:supported_languages, &filetype, 0, 1)
+	if l:language_is_supported > -1
+		if empty(glob(s:tags_dir))
+			try
+				call mkdir(s:tags_dir, 'p')
+			catch
+				echoerr "Can't create" s:tags_dir "folder"
+				finish
+			endtry
+		endif
+
+		execute "call jobstart('ctags -f .tags/" . &filetype . " --languages=" . &filetype . " --tag-relative=yes', {'detach': 1})"
+		call s:SetTags()
 	endif
-	execute 'call vimproc#system_bg("' . g:tagsmatic_ctags . ' -f ' . l:file_extension . '.tags --languages=' . &filetype . ' .")'
 endfunction
 
 function s:SetTags()
-	let l:tags_file = expand("%:e") . ".tags"
-	if filereadable(l:tags_file)
-		execute "setlocal tags=" . l:tags_file
+	let l:tags_file = s:tags_dir . "/" . &filetype
+	if (stridx(&tags, l:tags_file) < 0) && filereadable(l:tags_file)
+		execute "setlocal tags+=" . l:tags_file
+		" TODO: If HTML also load CSS tags file
 	endif
 endfunction
 

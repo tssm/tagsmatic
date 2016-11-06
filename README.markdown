@@ -1,23 +1,15 @@
-Automatically and asynchrony generates and reads a tags file
-according to the type of the file that is being edited using
-ctags. It depends on [vimproc](https://github.com/Shougo/vimproc.vim)
-and [Exuberant Ctags](http://ctags.sourceforge.net/).
+This script generates and reads automatically and asynchronously
+(so it requires [Neovim][neovim]) a tags file according to the
+type of the file that is being edited.
 
 # Usage
 
-Just edit and save files whose extension is in the
-g:tagsloader_use_ctags_for list. Evey time the buffer is saved the
-script generates, recursively, a {fileextension}.tags file in the
-current directory, and every time a BufNewFile, BufRead or
-BufWinEnter events gets fired it sets the value of the tags option
-to {fileextension}.tags, if exists.
+You only need to edit and save files supported by [Universal
+Ctags][ctags]. Every time the buffer is saved the script generates
+a `.tags/{&filetype}` file in the working directory according to
+your settings in `~/.ctags`, and every time a `BufNewFile`,
+`BufRead` or `BufWinEnter` events gets triggered the script
+appends if necessary the same file to the local `tags` option.
 
-# Configuration
-
-<dl>
-<dt>g:tagsloader_ctags:</dt>
-<dd>String declaring the ctags binary. Default: 'ctags'.</dd>
-<dt>g:tagsloader_use_ctags_for:</dt>
-<dd>List of file extensions you want to generate tags. It must be
-supported by your ctags program.</dd>
-</dl>
+[ctags]: https://ctags.io
+[neovim]: https://neovim.io
