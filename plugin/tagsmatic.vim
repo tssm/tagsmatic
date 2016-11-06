@@ -1,19 +1,19 @@
-if exists('g:tagsloader_loaded')
+if exists('g:tagsmatic_loaded')
 	finish
 endif
 
-let g:tagsloader_loaded = 1
+let g:tagsmatic_loaded = 1
 
-if !exists('g:tagsloader_ctags')
-	let g:tagsloader_ctags = 'ctags'
+if !exists('g:tagsmatic_ctags')
+	let g:tagsmatic_ctags = 'ctags'
 endif
 
 function s:GenerateTags()
 	let l:file_extension = expand("%:e")
-	if index(g:tagsloader_use_ctags_for, tolower(l:file_extension)) == -1
+	if index(g:tagsmatic_use_ctags_for, tolower(l:file_extension)) == -1
 		return 0
 	endif
-	execute 'call vimproc#system_bg("' . g:tagsloader_ctags . ' -f ' . l:file_extension . '.tags --languages=' . &filetype . ' .")'
+	execute 'call vimproc#system_bg("' . g:tagsmatic_ctags . ' -f ' . l:file_extension . '.tags --languages=' . &filetype . ' .")'
 endfunction
 
 function s:SetTags()
